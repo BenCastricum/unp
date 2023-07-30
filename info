@@ -1,0 +1,76 @@
+AVPACK V1.20
+   This Russion compressor has many similaritys with PKLITE.  The PKLITE
+   routines are used to unpack this compressor.  However, it is not as good
+   as PKLITE. It reports that files with a size which is a multiple of 512
+   bytes contains an overlay and also it only stores the first 20h bytes of
+   an exeheader making it impossible to do a complete restore.
+
+COMPACK V4.4
+   Programs compressed with this version of COMPACK will not run on a 486.
+   The problem is updating the far jump to the adress the program is located.
+   Due to the read ahead buffer in the 486 the code is already read before it
+   is updated. The result is a jump to 0000:0000 probably causing a system
+   crash. This is fixed in V4.5.
+
+IMPLODER V1.0 Alpha
+   This program seems te be rip of of COMPACK V4.4.  Except for a few
+   instructions, the decode routine is exactly the same.
+
+MEGALITE V1.5
+   Like AVPACK, this compression looks very much like PKLITE.  This version
+   however contains an instruction which changes 1 byte in the decompression
+   routine.  I have not been able to find out what the use of this
+   instruction is.  All it seems to do is screw up the code.  The instruction
+   which causes this is: DEC BYTE PTR DS:[SI+012Ch].
+
+PKLITE V1.00á
+   This version does not compress files with a size which is a multiple of
+   512 correctly.  Fortunately, "pklite -x" will restore them correctly!
+
+PKLITE V1.14
+   Starting with this version, the registered versions of PKLITE have the
+   ability to add a signature in the PSP at 0x005C to allow the program to
+   check if the program is still compressed.  Also new is that the decompress
+   code of programs compressed with the -e options is scrambled.
+
+PKLITE V1.15
+   This version does not seem to detect OS2 or Windows files anymore and will
+   compress them like normal EXE files.
+
+PROTECT! EXE/COM V3.0
+   This program adds a CRC check and scrambles COM and EXE files.  New in
+   version 3.0 is the use of INT 1 (single step) and INT 3 (breakpoint) to
+   prevent debugging.
+
+PROTECT! EXE/COM V4.0
+   The author claims to use mutating code to avoid unpacking. However this
+   version could be unpacked with fixed breakpoints. New in this version is
+   the use of int 2 and int 0 (using an invalid div)
+
+PROTECT! EXE/COM V5.0
+   New in this version is the use of a decryption header which is almost
+   never the same.
+
+PKTINY V1.0
+   Thomas M”nkemeiers, known as the author of VGACopy, has written a small
+   program which adds a pklite header to TINYPROGed programs. Most utils
+   which identify other programs identify this incorrectly as a pklite'd
+   file. What PKTINY actually does is compress a file with TINYPROG using
+   options which instruct TINYPROG to leave space. After compressing it
+   overwrites some code with the pklite header it retreives from some PKWare
+   file. But it will let the entrypoint of the file point to a small piece of
+   code which will make it act like a normal tinyprog file and then executes
+   TINYPROG's decompression routine.
+
+SHRINK V1.00
+   This compressor uses the basic RLE (Run Lenghth Encoding) compression
+   algorithm to decrease the size of a program.  Unfortunately the program
+   contains at least 2 bugs.  One of the bugs is when the RLE byte is found
+   followed by a 00 while decompressing, a 00 is placed in the program which
+   should be the RLE byte.  The second bug is that the last byte of the
+   compressed file is not written to disk.  Both of these bugs are triggered
+   when all 256 bytes appear at least one time in the file.
+
+TINYPROG V3.8
+   Starting with this version, TINYPROG contains some code to redirect the
+   debug interrupts.
